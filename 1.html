@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Reader</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" integrity="sha384-k6RqeWeci5ZR/Lv4MR0sA0FfDOMbC6a30MWa9p3b/7ANg8MgZ6R3Zl4PRA/QOpK" crossorigin="anonymous">
+    <style>
+        body {
+            background: linear-gradient(135deg, #024950, #0FA4AF); /* Initial gradient */
+            font-family: 'Arial', sans-serif; /* Changed font for better readability */
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            animation: fadeIn 1s ease-in; /* Added fade-in effect */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .white-column {
+            background-color: white; /* White column */
+            padding: 30px; /* Increased padding */
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            width: 100%;
+            max-width: 700px; /* Max width of the container */
+            text-align: center; /* Center text */
+            margin-top: 20px; /* Space from the top */
+            transition: transform 0.3s ease; /* Added transform transition */
+        }
+
+        .white-column:hover {
+            transform: translateY(-5px); /* Slight lift on hover */
+        }
+
+        h1 {
+            color: #024950; /* Dark teal for heading */
+            font-weight: bold; /* Bold text */
+            margin: 0; /* Remove default margin */
+            font-size: 2.5em; /* Increased font size */
+            animation: slideIn 0.5s ease-in-out; /* Added slide-in effect */
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(-20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        h2 {
+            color: #024950; /* Dark teal for subheading */
+            font-weight: bold; /* Bold text */
+            margin: 10px 0; /* Margin between headings */
+            font-size: 1.5em; /* Increased font size */
+        }
+
+        .file-upload {
+            margin-top: 20px;
+            display: flex; /* Ensuring flex display for alignment */
+            justify-content: center; /* Center the button */
+            width: 100%; /* Full width for the button container */
+            animation: fadeIn 1.2s ease-in; /* Fade-in effect */
+        }
+
+        .upload-label {
+            width: 16rem; /* Custom width for label */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem 1rem; /* Padding for the label */
+            background: white; /* Background color for the label */
+            color: #0FA4AF; /* Text color for label */
+            border-radius: 0.5rem; /* Rounded corners */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); /* Shadow */
+            transition: background 0.3s, color 0.3s, transform 0.3s; /* Smooth transition for hover effects */
+            cursor: pointer; /* Pointer cursor */
+            text-transform: uppercase; /* Uppercase text */
+        }
+
+        .upload-label:hover {
+            background: #0FA4AF; /* Background on hover */
+            color: white; /* Text color on hover */
+            transform: scale(1.05); /* Scale effect on hover */
+        }
+
+        .upload-label svg {
+            width: 2rem; /* Icon width */
+            height: 2rem; /* Icon height */
+            transition: transform 0.3s; /* Transition for the icon */
+        }
+
+        .upload-label:hover svg {
+            transform: rotate(360deg); /* Rotate icon on hover */
+        }
+
+        .features-section, .reviews-section {
+            background: linear-gradient(135deg, #0FA4AF, #AFDDE5); /* Light blue gradient */
+            padding: 30px;
+            border-radius: 12px; /* Rounded corners */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Soft shadow */
+            width: 100%; /* Full width */
+            max-width: 800px; /* Max width of the container */
+            margin-top: 30px; /* Space from the top */
+            text-align: center; /* Center text */
+            animation: fadeIn 1.5s ease-in; /* Fade-in effect */
+        }
+
+        .features-container, .reviews-container {
+            display: flex; /* Use flexbox for layout */
+            flex-wrap: wrap; /* Allow wrapping to next line */
+            justify-content: space-around; /* Space items evenly */
+        }
+
+        .feature, .review {
+            background-color: white; /* White background for each feature/review box */
+            border-radius: 8px; /* Rounded corners */
+            padding: 20px; /* Padding inside feature/review box */
+            margin: 10px; /* Space around each feature/review box */
+            flex: 1 1 30%; /* Flex-grow, flex-shrink, flex-basis */
+            max-width: 30%; /* Max width of each feature/review box */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+            transition: transform 0.3s; /* Smooth scaling effect */
+        }
+
+        .feature:hover, .review:hover {
+            transform: scale(1.05); /* Slightly enlarge on hover */
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+        }
+
+        .review p {
+            margin: 5px 0; /* Remove default margin */
+            color: #333; /* Dark text color for reviews */
+            font-size: 1em; /* Font size for review text */
+        }
+
+        .review .author {
+            font-weight: bold; /* Bold author name */
+            color: #024950; /* Dark teal for author name */
+        }
+
+        /* Added styles for the footer */
+        footer {
+            margin-top: 40px;
+            text-align: center; /* Center text */
+            color: white; /* White text color */
+        }
+
+        footer a {
+            color: #FFD700; /* Gold color for links */
+            text-decoration: none; /* Remove underline */
+            transition: color 0.3s; /* Smooth color transition */
+        }
+
+        footer a:hover {
+            color: #FF6347; /* Tomato color on hover */
+        }
+
+        /* Media queries for responsiveness */
+        @media (max-width: 768px) {
+            .feature, .review {
+                flex: 1 1 100%; /* Full width on smaller screens */
+                max-width: 100%; /* Max width of each feature/review box */
+            }
+
+            h1 {
+                font-size: 2em; /* Smaller font size */
+            }
+
+            h2 {
+                font-size: 1.2em; /* Smaller font size */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="white-column">
+        <h1>PDF Reader</h1>
+        <h2>Industry's Most Powerful PDF Chatbot Solution</h2>
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqhqa0L9DZyaDLYxFvGWZ9Qo8b6UJxcmdVqw&s" alt="PDF Reader" style="max-width:100%; height:100px; border-radius:8px; margin:20px 0;">
+    </div>
+    
+    <div class="file-upload">
+        <label class="upload-label">
+            <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+            </svg>
+            <span class="mt-2 text-base leading-normal">Select a file</span>
+            <input type='file' class="hidden" />
+        </label>
+    </div>
+
+    <div class="features-section">
+        <h2>Features</h2>
+        <div class="features-container">
+            <div class="feature">
+                <h3>Chatbot Integration</h3>
+                <p>Interact with your PDFs like never before.</p>
+            </div>
+            <div class="feature">
+                <h3>High-Speed Processing</h3>
+                <p>Fast and efficient PDF handling.</p>
+            </div>
+            <div class="feature">
+                <h3>User-Friendly Interface</h3>
+                <p>Easy to use for everyone.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="reviews-section">
+        <h2>What Our Users Say</h2>
+        <div class="reviews-container">
+            <div class="review">
+                <p>"This PDF Reader has revolutionized my workflow!"</p>
+                <p class="author">— Jane Doe</p>
+            </div>
+            <div class="review">
+                <p>"I love the chatbot feature. It saves me a lot of time!"</p>
+                <p class="author">— John Smith</p>
+            </div>
+            <div class="review">
+                <p>"The interface is user-friendly and intuitive. Highly recommended!"</p>
+                <p class="author">— Emily Johnson</p>
+            </div>
+            <div class="review">
+                <p>"A game changer for handling PDFs in my daily tasks!"</p>
+                <p class="author">— Sarah Williams</p>
+            </div>
+            <div class="review">
+                <p>"Fast, reliable, and easy to use. This is my go-to PDF tool!"</p>
+                <p class="author">— Michael Brown</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 PDF Reader Inc. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+    </footer>
+
+    <script>
+        document.querySelector('.upload-label').addEventListener('click', function() {
+            // Simulate a file upload with a timeout (e.g., 2 seconds)
+            const fileInput = document.querySelector('input[type="file"]');
+            fileInput.click(); // Trigger the hidden file input
+            fileInput.addEventListener('change', function() {
+                // Action after file selection
+                alert(`File selected: ${fileInput.files[0].name}`);
+            });
+        });
+    </script>
+</body>
+</html>
