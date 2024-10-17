@@ -1,0 +1,14 @@
+::-webkit-scrollbar {
+    /* Customize the scrollbar width */
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    /* Customize the scrollbar track */
+    color: yellow;
+}
+
+::-webkit-scrollbar-thumb {
+    /* Customize the scrollbar thumb */
+    color: red;
+}

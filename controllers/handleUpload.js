@@ -1,15 +1,9 @@
 const { pdfToText } = require("../services/pdf-parse")
-const axios = require('axios');
+const { sendPdf } = require("../services/pdfTransfer")
 
 const handleUpload = (req, res) => {
-    pdfToText(`./public/Data/${req.file.filename}`)
-    axios.post('/user', {})
-        .then(function (response) {
-            console.log(response);
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    pdfToText(`./public/Data/${req.file.filename}`);
+    sendPdf(req.file.filename, "https://ee10-2401-4900-5c9a-3fe5-812f-924b-b223-d858.ngrok-free.app/upload")
     res.redirect("upload/")
 }
 module.exports = {
