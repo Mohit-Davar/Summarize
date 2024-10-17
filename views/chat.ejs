@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Wall Effect</title>
+    <!-- Link Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        * {
+            padding: 0px;
+            margin: 0px;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: rgb(27, 20, 20);
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            /* align-items: center; */
+            flex-direction: column;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 50px;
+            background-color: #222;
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            height: 70px;
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: -10px 0 30px rgba(132, 144, 24, 0.3);
+            border-bottom: 3px groove rgb(77, 118, 14);
+        }
+
+        .navbar h1 {
+            font-size: 1.5rem;
+        }
+
+        .navbar .nav-options {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar .nav-options a {
+            color: #dae50e;
+            text-decoration: none;
+            font-size: 1.25rem;
+            padding: 10px;
+            background-color: #000000;
+            border: 2px groove greenyellow;
+            border-radius: 20px;
+        }
+
+        .navbar .nav-options a:hover {
+            background-color: #666;
+            color: #ffffff;
+            transform: scale(1.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        main {
+            display: flex;
+            width: 100vw;
+            height: calc(100vh - 70px);
+        }
+
+        .wall {
+            width: 20vw;
+            background-color: #151715;
+            box-shadow: -10px 0 30px rgba(189, 74, 74, 0.9);
+            border-right: 3px groove rgb(133, 190, 46);
+            padding: 20px;
+            color: #fff;
+            font-family: Arial, sans-serif;
+            overflow-y: auto;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            width: 80vw;
+        }
+
+        .chat {
+            background-color: rgb(22, 12, 12);
+            width: 100%;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            border: 1px groove greenyellow;
+            padding: 20px 30px;
+        }
+
+        .downdiv {
+            background-color: rgb(32, 40, 38);
+            border-radius: 10px;
+            border: 1px groove greenyellow;
+        }
+
+        .chat-container {
+            padding: 10px;
+            background: linear-gradient(to right, #bdd91c, #100f0a);
+            /* Gradient from grey to yellow */
+            box-shadow: 0 4px 10px rgba(189, 230, 27, 0.3);
+            border: 3px groove greenyellow;
+            width: 80vw;
+        }
+
+        .chat-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .chat-input {
+            flex-grow: 1;
+            padding: 10px 50px 10px 20px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            outline: none;
+            font-size: 16px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
+            transition: border-color 0.3s ease;
+            width: 100%;
+        }
+
+        .chat-input:focus {
+            border-color: #888;
+        }
+
+        .submit-btn {
+            position: absolute;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            color: #666;
+            font-size: 20px;
+            outline: none;
+            transition: color 0.3s ease;
+        }
+
+        .submit-btn:hover {
+            color: #333;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.95);
+        }
+
+        .message {
+            background: white;
+            color: black;
+            padding: 8px 16px;
+            border-radius: 20px;
+            width: 50vw;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar">
+        <h1>Untitled Notebook</h1>
+        <div class="nav-options">
+            <a href="#">Settings</a>
+            <a href="#">Share</a>
+        </div>
+    </nav>
+    <main>
+        <div class="wall" id="messageWall">
+            <div style="color: white;">
+                <% if (locals.questions) { %>
+                    <h1>Generated Questions</h1>
+                    <% questions.forEach(question=> { %>
+                        <div>
+                            <%= question %>
+                        </div>
+                        <% }) %>
+                            <% } %>
+
+            </div>
+        </div>
+        <div class="conatiner">
+            <div class="chat">
+                <% if (locals.answer) { %>
+                    <div class="message">
+                        <%= answer %>
+                    </div>
+                    <% } %>
+            </div>
+            <div class="downdiv">
+                <div class="chat-container">
+                    <p
+                        style="color: rgb(146, 111, 111); font-family: 'Times New Roman', Times, serif; color: #000000; font-size: 18px;">
+                        Enter your query below:
+                    </p>
+                    <form class="chat-input-container" method="post" action="/chat">
+                        <input type="text" id="queryInput" class="chat-input" name="question"
+                            placeholder="Type a message...">
+                        <button class="submit-btn" type="submit">
+                            <i class="fas fa-search"></i> <!-- Magnifying glass icon -->
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+<script>
+    document.querySelector(".submit-btn").addEventListener("click", (e) => {
+        const value = document.querySelector("#queryInput").value; // Get the input field's value
+        if (value.length > 0) {
+            const newMessage = document.createElement("div")
+            newMessage.textContent = value
+            newMessage.classList.add("message")
+            document.querySelector(".chat").appendChild(newMessage)
+            localStorage.setItem("chat", `${document.querySelector('.chat').innerHTML}`);
+        }
+    });
+</script>
+
+</html>

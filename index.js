@@ -9,7 +9,12 @@ const path = require("path")
 app.use(express.static(path.join(__dirname, 'public')));
 
 const workbookRouter = require("./routes/workbookRoute")
+const chatRouter = require("./routes/chatRoute")
 app.use("/workbook", workbookRouter);
+app.use("/chat", chatRouter)
+app.get("/", (req, res) => {
+    res.render("index")
+})
 // Setting Up Templating Engine
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./Views"));

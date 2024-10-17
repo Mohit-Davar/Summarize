@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Reader</title>
+    <link rel="stylesheet" href="/CSS/output.css">
+    <link rel="stylesheet" href="/CSS/fonts.css">
+    <style>
+        /* Resetting default browser padding and margin */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling for a full-page, centered layout */
+        body {
+            font-family: 'Poppins', sans-serif;
+            /* Default font for body */
+            background-color: #000;
+            /* Black background */
+            background: linear-gradient(135deg, #000, #111);
+            /* Subtle gradient */
+            color: #FFD700;
+            /* Yellow text */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            text-align: center;
+            overflow: hidden;
+            /* Prevent scrollbars */
+        }
+
+        /* Main container for the page content */
+        .container {
+            max-width: 900px;
+            /* Increased max-width */
+            padding: 20px;
+            opacity: 0;
+            /* Start hidden for animation */
+            transform: translateY(20px);
+            /* Start below */
+            animation: fadeInUp 0.8s forwards;
+            /* Fade-in effect */
+        }
+
+        /* Main title styling with Roboto font */
+        h1 {
+            font-family: 'Roboto', sans-serif;
+            /* Changed font family to Roboto */
+            font-size: 64px;
+            /* Increased font size */
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: #FFD700;
+            letter-spacing: 2px;
+            /* Spacing between letters */
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+            /* Text shadow for depth */
+            opacity: 0;
+            /* Start hidden for animation */
+            transform: translateY(-20px);
+            /* Start above */
+            animation: fadeInDown 0.8s forwards;
+            /* Fade-in down effect */
+            animation-delay: 0.2s;
+            /* Delay for staggered effect */
+        }
+
+        /* Subtitle (quote) area with typewriter effect */
+        .typewriter {
+            font-size: 32px;
+            /* Increased font size */
+            border-right: 3px solid #FFD700;
+            /* Yellow blinking cursor */
+            white-space: nowrap;
+            overflow: hidden;
+            display: inline-block;
+            /* Keep it inline-block for centering */
+            animation: blink 1s infinite;
+            /* Blinking cursor */
+            opacity: 0;
+            /* Start hidden for animation */
+            transform: translateY(20px);
+            /* Start below */
+            animation: fadeInUp 0.8s forwards;
+            /* Fade-in effect */
+            animation-delay: 0.5s;
+            /* Delay for staggered effect */
+            text-align: center;
+            /* Center align text */
+        }
+
+        /* Blinking effect for the typewriter cursor */
+        @keyframes blink {
+
+            0%,
+            50% {
+                border-color: #FFD700;
+                /* Visible */
+            }
+
+            50%,
+            100% {
+                border-color: transparent;
+                /* Hidden */
+            }
+        }
+
+        /* Fade-in effect for the main content */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                /* Fully visible */
+                transform: translateY(0);
+                /* Original position */
+            }
+        }
+
+        /* Fade-in down effect for title */
+        @keyframes fadeInDown {
+            to {
+                opacity: 1;
+                /* Fully visible */
+                transform: translateY(0);
+                /* Original position */
+            }
+        }
+
+        /* Call-to-action button below the quote */
+        .cta {
+            margin-top: 50px;
+            opacity: 0;
+            /* Start hidden for animation */
+            transform: translateY(20px);
+            /* Start below */
+            animation: fadeInUp 0.8s forwards;
+            /* Fade-in effect */
+            animation-delay: 0.7s;
+            /* Delay for staggered effect */
+        }
+
+        /* Styling the Get Started button */
+        .cta a {
+            text-decoration: none;
+            background-color: #FFD700;
+            /* Yellow background */
+            color: #000;
+            /* Black text for contrast */
+            padding: 15px 40px;
+            font-size: 22px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: inline-block;
+            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            /* For hover effect */
+            overflow: hidden;
+            /* Contain hover effects */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            /* Add shadow */
+        }
+
+        /* Button hover effect */
+        .cta a:hover {
+            background-color: #333;
+            /* Darker background on hover */
+            color: #FFD700;
+            /* Yellow text on hover */
+            transform: scale(1.05);
+            /* Slightly increase size on hover */
+            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.6);
+            /* Highlight shadow on hover */
+        }
+
+        /* Responsive Design: for tablets and medium screens */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 48px;
+                /* Adjust title size */
+            }
+
+            .typewriter {
+                font-size: 28px;
+                /* Adjust typewriter size */
+            }
+
+            .cta a {
+                font-size: 20px;
+                /* Adjust button text size */
+                padding: 12px 35px;
+            }
+        }
+
+        /* Responsive Design: for small screens and mobile phones */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 36px;
+                /* Adjust title size further */
+            }
+
+            .typewriter {
+                font-size: 22px;
+                /* Adjust typewriter size */
+            }
+
+            .cta a {
+                font-size: 18px;
+                /* Adjust button text size */
+                padding: 10px 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav
+        class="bg-white dark:bg-themeOne fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
+        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+            <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"><img src="/Images/WhatsApp Image 2024-10-17 at 07.34.17_6f0bbe15.jpg" alt="Logo" class="size-12"></span>
+            </a>
+            <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
+                <a type="button" href="/workbook/upload/"
+                    class="select-none px-2 py-1 sm:px-4 sm:py-2 rounded-3xl backdrop-blur-xl bg-black/80 text-white overflow-hidden ring-blue-300 ring-[0.3rem] font-Poppins relative z-0  p-0 hover:text-black focus:text-black getStarted flex flex-col hover:ring-0 transition-all duration-500 outline-none focus:ring-0 md:text-lg ml-3">
+                    Get started
+                    <div class="w-full aspect-square bg-blue-600 -z-10 absolute top-full left-0 rounded-full"></div>
+                    <div class="w-full aspect-square bg-blue-500 -z-10 absolute top-full left-0 rounded-full"></div>
+                    <div class="w-full aspect-square bg-blue-400 -z-10 absolute top-full left-0 rounded-full"></div>
+                </a>
+                <button data-collapse-toggle="navbar-sticky" type="button"
+                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                    aria-controls="navbar-sticky" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 17 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M1 1h15M1 7h15M1 13h15" />
+                    </svg>
+                </button>
+            </div>
+            <div class="section flex gap-10 text-white">
+                <a href="/">
+                    <div
+                        class="home before:bg-blue-500 before:absolute relative before:w-full before:h-full before:rounded-full px-4 py-2 overflow-hidden before:top-0 before:left-0 before:scale-y-0 hover:before:scale-y-100 before:transition-all hover:before:rounded-none before:-z-10 rounded-full before:origin-bottom">
+                        Home
+                    </div>
+                </a>
+                <a href="/workbook/upload">
+                    <div
+                        class="workbook before:bg-blue-500 before:absolute relative before:w-full before:h-full before:rounded-full px-4 py-2 overflow-hidden before:top-0 before:left-0 before:scale-y-0 hover:before:scale-y-100 before:transition-all hover:before:rounded-none before:-z-10 rounded-full before:origin-bottom">
+                        Workbook
+                    </div>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <h1>Welcome to <span id="summarize">Summarize</span></h1>
+        <p class="typewriter" id="quote"></p>
+        <div class="cta">
+            <a href="/workbook/upload">Get Started</a>
+        </div>
+    </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+    integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+<script src="/Script/navbar.js"></script>
+
+</html>
+
+
+<script>
+    // Typewriter text content
+    const quote = "Summarizer: Your AI-powered tool for  communication with PDFs.";
+    let i = 0;
+
+    // Typewriter effect function
+    function typeWriter() {
+        if (i < quote.length) {
+            document.getElementById("quote").innerHTML += quote.charAt(i);
+            i++;
+            setTimeout(typeWriter, 80); // Speed up the typing (80ms per character)
+        }
+    }
+
+    // Trigger typewriter effect on page load
+    window.onload = function () {
+        typeWriter();
+        // Trigger the container fade-in animation after a delay
+        setTimeout(() => {
+            document.querySelector('.container').style.opacity = 1;
+            document.querySelector('.container').style.transform = 'translateY(0)';
+        }, 200); // Delay for the fade-in effect
+    };
+</script>
