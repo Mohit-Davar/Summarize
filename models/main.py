@@ -6,8 +6,8 @@ from werkzeug.utils import secure_filename
 import os
 import json
 from flask import Response,request
-
 from wtforms.validators import InputRequired
+import shutil
 
 import populate_database
 import query_data
@@ -15,15 +15,14 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'supersecretkey'
 app.config['UPLOAD_FOLDER'] = './data'
 
-class UploadFileForm(FlaskForm):
-    file = FileField("File", validators=[InputRequired()])
-    submit = SubmitField("Upload File")
 UPLOAD_FOLDER = './data'
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
-
+#to upload the pdf file
 @app.route('/upload', methods=['POST'])
 def upload_pdf():
+
+   
     # Check if a file is present in the request
     if 'file' not in request.files:
         return jsonify({"error": "No file part in the request"}), 400
@@ -33,26 +32,19 @@ def upload_pdf():
         return jsonify({"error": "No selected file or not a PDF"}), 400
 
     # Save the file to the specified folder
+    chrx()
     filepath = os.path.join(UPLOAD_FOLDER, file.filename)
     file.save(filepath)
-    return     query(), 200
+    return     query(1), 200
 
-
-@app.route('/home', methods=['GET',"POST"])
-def home():
-    form = UploadFileForm()
-    if form.validate_on_submit():
-        file = form.file.data # First grab the file
-        file.save(os.path.join(os.path.abspath(os.path.dirname(__file__)),app.config['UPLOAD_FOLDER'],secure_filename(file.filename))) # Then save the file
-        return "File has been uploaded."
-    return render_template('index.html', form=form)
+#read the new pdf file and convert it into emmbedings
 @app.route('/dataup',methods=['GET','POST'])
-def query():
+def query(a):
     populate_database.main()
-
-    return jsonify({ 'Questions' :query_data.main("Generate 5 random question related to the pdf")})
-
-
+    if a== 1:
+        return jsonify({ 'Questions' :query_data.main("Generate 5 random question related to the pdf")})
+    
+#for query search 
 @app.route('/query/',methods=['POST'])
 def submit_string():
      # Check if the request is JSON
@@ -69,5 +61,17 @@ def submit_string():
     else:
         return jsonify({"error": "Request must be JSON"}), 400
     
+
+
+
+def chrx():    
+        folder="data"
+        for filename in os.listdir(folder):
+            file_path = os.path.join(folder, filename)
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+
 if __name__ == '__main__':
     app.run(debug=True,port=8080)
