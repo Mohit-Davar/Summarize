@@ -48,6 +48,7 @@ ollama serve (to run the server)
 ```bash
 python3 main.py
 ```
+you can use services like ngrok to deploy services like flask api as a server
 ### 5. Setting up of webserver to be added
 <to-be -added
 ## ScreenShots
