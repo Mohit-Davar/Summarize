@@ -44,9 +44,8 @@ ollama serve (to run the server)
 ```
 ### 4.Run the Flask API server 
 ./models/
-bash
-Copycode
-```
+
+```bash
 python3 main.py
 ```
 ### 5. Setting up of webserver to be added
