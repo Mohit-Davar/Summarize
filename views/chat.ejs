@@ -4,228 +4,183 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Wall Effect</title>
+    <title>Summarize</title>
+    <link rel="shortcut icon" href="/Images/Logo.png" type="image/x-icon">
     <!-- Link Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-    <style>
-        * {
-            padding: 0px;
-            margin: 0px;
-            box-sizing: border-box;
-        }
-
-        body {
-            background-color: rgb(27, 20, 20);
-            min-height: 100vh;
-            width: 100%;
-            display: flex;
-            /* align-items: center; */
-            flex-direction: column;
-        }
-
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 30px 50px;
-            background-color: #222;
-            color: #fff;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            height: 70px;
-            width: 100%;
-            border-radius: 10px;
-            box-shadow: -10px 0 30px rgba(132, 144, 24, 0.3);
-            border-bottom: 3px groove rgb(77, 118, 14);
-        }
-
-        .navbar h1 {
-            font-size: 1.5rem;
-        }
-
-        .navbar .nav-options {
-            display: flex;
-            gap: 20px;
-        }
-
-        .navbar .nav-options a {
-            color: #dae50e;
-            text-decoration: none;
-            font-size: 1.25rem;
-            padding: 10px;
-            background-color: #000000;
-            border: 2px groove greenyellow;
-            border-radius: 20px;
-        }
-
-        .navbar .nav-options a:hover {
-            background-color: #666;
-            color: #ffffff;
-            transform: scale(1.1);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-        }
-
-        main {
-            display: flex;
-            width: 100vw;
-            height: calc(100vh - 70px);
-        }
-
-        .wall {
-            width: 20vw;
-            background-color: #151715;
-            box-shadow: -10px 0 30px rgba(189, 74, 74, 0.9);
-            border-right: 3px groove rgb(133, 190, 46);
-            padding: 20px;
-            color: #fff;
-            font-family: Arial, sans-serif;
-            overflow-y: auto;
-        }
-
-        .container {
-            display: flex;
-            flex-direction: column;
-            width: 80vw;
-        }
-
-        .chat {
-            background-color: rgb(22, 12, 12);
-            width: 100%;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            border: 1px groove greenyellow;
-            padding: 20px 30px;
-        }
-
-        .downdiv {
-            background-color: rgb(32, 40, 38);
-            border-radius: 10px;
-            border: 1px groove greenyellow;
-        }
-
-        .chat-container {
-            padding: 10px;
-            background: linear-gradient(to right, #bdd91c, #100f0a);
-            /* Gradient from grey to yellow */
-            box-shadow: 0 4px 10px rgba(189, 230, 27, 0.3);
-            border: 3px groove greenyellow;
-            width: 80vw;
-        }
-
-        .chat-input-container {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .chat-input {
-            flex-grow: 1;
-            padding: 10px 50px 10px 20px;
-            border-radius: 20px;
-            border: 1px solid #ddd;
-            outline: none;
-            font-size: 16px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
-            transition: border-color 0.3s ease;
-            width: 100%;
-        }
-
-        .chat-input:focus {
-            border-color: #888;
-        }
-
-        .submit-btn {
-            position: absolute;
-            right: 10px;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            color: #666;
-            font-size: 20px;
-            outline: none;
-            transition: color 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            color: #333;
-        }
-
-        .submit-btn:active {
-            transform: scale(0.95);
-        }
-
-        .message {
-            background: white;
-            color: black;
-            padding: 8px 16px;
-            border-radius: 20px;
-            width: 50vw;
-        }
-    </style>
+    <link rel="stylesheet" href="/CSS/output.css">
+    <link rel="stylesheet" href="/CSS/scrollbar.css">
 </head>
 
 <body>
-    <nav class="navbar">
-        <h1>Untitled Notebook</h1>
-        <div class="nav-options">
-            <a href="#">Settings</a>
-            <a href="#">Share</a>
-        </div>
-    </nav>
-    <main>
-        <div class="wall" id="messageWall">
-            <div style="color: white;">
-                <% if (locals.questions) { %>
-                    <h1>Generated Questions</h1>
-                    <% questions.forEach(question=> { %>
-                        <div>
-                            <%= question %>
-                        </div>
-                        <% }) %>
-                            <% } %>
-
-            </div>
-        </div>
-        <div class="conatiner">
-            <div class="chat">
-                <% if (locals.answer) { %>
-                    <div class="message">
-                        <%= answer %>
+    <div class="flex lg:h-screen h-[200vh] antialiased text-black bg-primary-theme-one">
+        <div class="flex lg:flex-row h-full w-full overflow-x-hidden flex-col">
+            <div class="flex flex-col py-8 pl-6 pr-2 lg:w-1/3 w-full  bg-primary-theme-one flex-shrink-0">
+                <div class="flex flex-row items-center justify-center h-12 w-full">
+                    <div
+                        class="flex items-center justify-center rounded-full text-primary-theme-one bg-primary-theme-two size-10">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z">
+                            </path>
+                        </svg>
                     </div>
-                    <% } %>
+                    <div class="ml-2 font-bold text-2xl text-primary-theme-two">
+                        Suggested Questions
+                    </div>
+                </div>
+                <div class="flex flex-col mt-8 items-center gap-5">
+                    <% if (locals.questions) { %>
+                        <div class="flex flex-row items-center justify-between text-xs gap-5">
+                            <span class="font-bold">
+                                Questions
+                            </span>
+                            <span
+                                class="flex items-center justify-center bg-primary-theme-two h-4 w-4 rounded-full text-primary-theme-one">5
+                            </span>
+                        </div>
+                        <div class="flex flex-col space-y-1 mt-4 -mx-2 overflow-y-auto px-2 h-64">
+                            <% questions.forEach(question=> { %>
+                                <button
+                                    class="flex flex-row items-center focus:outline-none focus:bg-secondary-theme-two hover:bg-secondary-theme-two rounded-xl p-2 border-2 border-secondary-theme-two questionButton ml-2 text-sm font-semibold">
+                                    <%= question %>
+                                </button>
+                                <% }) %>
+                        </div>
+                        <% } %>
+                            <a href="/workbook/upload"
+                                class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-red-200 via-red-300 to-yellow-200 group-hover:from-red-200 group-hover:via-red-300 group-hover:to-yellow-200 dark:text-white dark:hover:text-gray-900 focus:ring-4 focus:outline-none focus:ring-red-100 dark:focus:ring-red-400">
+                                <span
+                                    class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                    Back
+                                </span>
+                            </a>
+                </div>
             </div>
-            <div class="downdiv">
-                <div class="chat-container">
-                    <p
-                        style="color: rgb(146, 111, 111); font-family: 'Times New Roman', Times, serif; color: #000000; font-size: 18px;">
-                        Enter your query below:
-                    </p>
-                    <form class="chat-input-container" method="post" action="/chat">
-                        <input type="text" id="queryInput" class="chat-input" name="question"
-                            placeholder="Type a message...">
-                        <button class="submit-btn" type="submit">
-                            <i class="fas fa-search"></i> <!-- Magnifying glass icon -->
-                        </button>
-                    </form>
+
+            <div class="flex flex-col flex-auto h-full p-6">
+                <div class="flex flex-col flex-auto flex-shrink-0 rounded-2xl bg-secondary-theme-two h-full p-4">
+                    <div class="flex flex-col h-full overflow-x-auto mb-4">
+                        <div class="flex flex-col h-full">
+                            <div class="grid grid-cols-12 gap-y-2" id="chat-container">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row items-center h-16 rounded-xl bg-primary-theme-one w-full px-4">
+                        <div class="flex-grow ml-4">
+                            <div class="relative w-full">
+                                <input type="text"
+                                    class="flex w-full border rounded-xl focus:outline-none focus:border-indigo-300 pl-4 h-10"
+                                    id="query" />
+                                <button
+                                    class="absolute flex items-center justify-center h-full w-12 right-0 top-0 text-gray-400 hover:text-gray-600">
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="ml-4">
+                            <button
+                                class="flex items-center justify-center bg-primary-theme-two hover:bg-primary-textTheme-one rounded-xl text-white px-4 py-1 flex-shrink-0"
+                                id="send">
+                                <span>
+                                    Send
+                                </span>
+                                <span class="ml-2">
+                                    <svg class="w-4 h-4 transform rotate-45 -mt-px" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                                    </svg>
+                                </span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-    </main>
-
+    </div>
 </body>
+
+<script src="/socket.io/socket.io.js"></script>
 <script>
-    document.querySelector(".submit-btn").addEventListener("click", (e) => {
-        const value = document.querySelector("#queryInput").value; // Get the input field's value
-        if (value.length > 0) {
-            const newMessage = document.createElement("div")
-            newMessage.textContent = value
-            newMessage.classList.add("message")
-            document.querySelector(".chat").appendChild(newMessage)
-            localStorage.setItem("chat", `${document.querySelector('.chat').innerHTML}`);
-        }
+    const socket = io.connect();
+    const send = document.getElementById("send");
+    const chatContainer = document.getElementById("chat-container")
+    const queryBox = document.getElementById("query")
+
+    send.addEventListener("click", () => {
+        const query = queryBox.value;
+        socket.emit("query", query);
+        chatContainer.innerHTML += `
+        <div class="col-start-2 col-end-13 p-3 rounded-lg">
+            <div class="flex items-center justify-start flex-row-reverse">
+                <div class="flex items-center justify-center size-10 rounded-full bg-primary-theme-two flex-shrink-0 text-primary-theme-one">
+                    You
+                </div>
+                <div class="relative mr-3 text-sm bg-primary-theme-one py-2 px-4 shadow rounded-xl">
+                    <div> 
+                        ${query}
+                    </div>
+                </div>
+            </div>
+        </div>
+        `
+        queryBox.value = "";
+        queryBox.focus();
+        window.scrollTo(0, document.body.scrollHeight)
     });
+
+    socket.on("answer", ({ answer, citations }) => {
+        const reduced = citations.map(str => str.slice(-7))
+        const citationsString = reduced.join("------")
+        chatContainer.innerHTML += `
+            <div class="col-start-1 col-end-11 p-3 rounded-lg">
+                <div class="flex flex-row items-center">
+                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-primary-theme-two flex-shrink-0 text-primary-theme-one">
+                        AI
+                    </div>
+                    <div class="relative ml-3 text-sm bg-primary-theme-one py-2 px-4 shadow rounded-xl">
+                        <div>
+                            ${answer}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `
+        chatContainer.innerHTML += `
+            <div class="col-start-1 col-end-11 p-3 rounded-lg">
+                <div class="flex flex-row items-center">
+                    <div class="flex items-center justify-center h-10 w-10 rounded-full bg-primary-theme-two flex-shrink-0 text-primary-theme-one">
+                        AI
+                    </div>
+                    <div class="relative ml-3 text-sm bg-primary-theme-one py-2 px-4 shadow rounded-xl">
+                        CITATIONS
+                        <div>
+                            ${citationsString}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            `
+        window.scrollTo(0, document.body.scrollHeight);
+    });
+
+    function addEvent() {
+        document.querySelectorAll(".questionButton").forEach((button) => {
+            button.addEventListener("click", () => {
+                const content = button.textContent.trim()
+                navigator.clipboard.writeText(content);
+                alert("Copied");
+            })
+        })
+    }
+    addEvent()
 </script>
 
 </html>

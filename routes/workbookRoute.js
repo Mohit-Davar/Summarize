@@ -1,14 +1,11 @@
-// Acquiring Express 
 const express = require("express")
 const router = express.Router()
 const upload = require("../services/multer")
 const { handleUpload } = require("../controllers/handleUpload")
+const { displayInput } = require('../controllers/handleStatic')
 
 router.route("/upload")
-    .get((req, res) => {
-        res.render('input')
-    })
+    .get(displayInput)
     .post(upload.single("file-upload"), handleUpload)
-
 
 module.exports = router

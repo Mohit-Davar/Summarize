@@ -4,299 +4,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF Reader</title>
+    <title>Summarize</title>
+    <link rel="shortcut icon" href="/Images/Logo.png" type="image/x-icon">
     <link rel="stylesheet" href="/CSS/output.css">
     <link rel="stylesheet" href="/CSS/fonts.css">
-    <style>
-        /* Resetting default browser padding and margin */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        /* Body styling for a full-page, centered layout */
-        body {
-            font-family: 'Poppins', sans-serif;
-            /* Default font for body */
-            background-color: #000;
-            /* Black background */
-            background: linear-gradient(135deg, #000, #111);
-            /* Subtle gradient */
-            color: #FFD700;
-            /* Yellow text */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            padding: 20px;
-            text-align: center;
-            overflow: hidden;
-            /* Prevent scrollbars */
-        }
-
-        /* Main container for the page content */
-        .container {
-            max-width: 900px;
-            /* Increased max-width */
-            padding: 20px;
-            opacity: 0;
-            /* Start hidden for animation */
-            transform: translateY(20px);
-            /* Start below */
-            animation: fadeInUp 0.8s forwards;
-            /* Fade-in effect */
-        }
-
-        /* Main title styling with Roboto font */
-        h1 {
-            font-family: 'Roboto', sans-serif;
-            /* Changed font family to Roboto */
-            font-size: 64px;
-            /* Increased font size */
-            font-weight: 800;
-            margin-bottom: 30px;
-            color: #FFD700;
-            letter-spacing: 2px;
-            /* Spacing between letters */
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
-            /* Text shadow for depth */
-            opacity: 0;
-            /* Start hidden for animation */
-            transform: translateY(-20px);
-            /* Start above */
-            animation: fadeInDown 0.8s forwards;
-            /* Fade-in down effect */
-            animation-delay: 0.2s;
-            /* Delay for staggered effect */
-        }
-
-        /* Subtitle (quote) area with typewriter effect */
-        .typewriter {
-            font-size: 32px;
-            /* Increased font size */
-            border-right: 3px solid #FFD700;
-            /* Yellow blinking cursor */
-            white-space: nowrap;
-            overflow: hidden;
-            display: inline-block;
-            /* Keep it inline-block for centering */
-            animation: blink 1s infinite;
-            /* Blinking cursor */
-            opacity: 0;
-            /* Start hidden for animation */
-            transform: translateY(20px);
-            /* Start below */
-            animation: fadeInUp 0.8s forwards;
-            /* Fade-in effect */
-            animation-delay: 0.5s;
-            /* Delay for staggered effect */
-            text-align: center;
-            /* Center align text */
-        }
-
-        /* Blinking effect for the typewriter cursor */
-        @keyframes blink {
-
-            0%,
-            50% {
-                border-color: #FFD700;
-                /* Visible */
-            }
-
-            50%,
-            100% {
-                border-color: transparent;
-                /* Hidden */
-            }
-        }
-
-        /* Fade-in effect for the main content */
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                /* Fully visible */
-                transform: translateY(0);
-                /* Original position */
-            }
-        }
-
-        /* Fade-in down effect for title */
-        @keyframes fadeInDown {
-            to {
-                opacity: 1;
-                /* Fully visible */
-                transform: translateY(0);
-                /* Original position */
-            }
-        }
-
-        /* Call-to-action button below the quote */
-        .cta {
-            margin-top: 50px;
-            opacity: 0;
-            /* Start hidden for animation */
-            transform: translateY(20px);
-            /* Start below */
-            animation: fadeInUp 0.8s forwards;
-            /* Fade-in effect */
-            animation-delay: 0.7s;
-            /* Delay for staggered effect */
-        }
-
-        /* Styling the Get Started button */
-        .cta a {
-            text-decoration: none;
-            background-color: #FFD700;
-            /* Yellow background */
-            color: #000;
-            /* Black text for contrast */
-            padding: 15px 40px;
-            font-size: 22px;
-            border-radius: 8px;
-            font-weight: bold;
-            display: inline-block;
-            transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
-            position: relative;
-            /* For hover effect */
-            overflow: hidden;
-            /* Contain hover effects */
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-            /* Add shadow */
-        }
-
-        /* Button hover effect */
-        .cta a:hover {
-            background-color: #333;
-            /* Darker background on hover */
-            color: #FFD700;
-            /* Yellow text on hover */
-            transform: scale(1.05);
-            /* Slightly increase size on hover */
-            box-shadow: 0 6px 15px rgba(255, 215, 0, 0.6);
-            /* Highlight shadow on hover */
-        }
-
-        /* Responsive Design: for tablets and medium screens */
-        @media (max-width: 768px) {
-            h1 {
-                font-size: 48px;
-                /* Adjust title size */
-            }
-
-            .typewriter {
-                font-size: 28px;
-                /* Adjust typewriter size */
-            }
-
-            .cta a {
-                font-size: 20px;
-                /* Adjust button text size */
-                padding: 12px 35px;
-            }
-        }
-
-        /* Responsive Design: for small screens and mobile phones */
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 36px;
-                /* Adjust title size further */
-            }
-
-            .typewriter {
-                font-size: 22px;
-                /* Adjust typewriter size */
-            }
-
-            .cta a {
-                font-size: 18px;
-                /* Adjust button text size */
-                padding: 10px 25px;
-            }
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,700" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 <body>
-    <nav
-        class="bg-white dark:bg-themeOne fixed w-full z-20 top-0 start-0 border-b border-gray-200 dark:border-gray-600">
-        <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-            <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"><img src="/Images/WhatsApp Image 2024-10-17 at 07.34.17_6f0bbe15.jpg" alt="Logo" class="size-12"></span>
-            </a>
-            <div class="flex md:order-2 space-x-3 md:space-x-0 rtl:space-x-reverse">
-                <a type="button" href="/workbook/upload/"
-                    class="select-none px-2 py-1 sm:px-4 sm:py-2 rounded-3xl backdrop-blur-xl bg-black/80 text-white overflow-hidden ring-blue-300 ring-[0.3rem] font-Poppins relative z-0  p-0 hover:text-black focus:text-black getStarted flex flex-col hover:ring-0 transition-all duration-500 outline-none focus:ring-0 md:text-lg ml-3">
-                    Get started
-                    <div class="w-full aspect-square bg-blue-600 -z-10 absolute top-full left-0 rounded-full"></div>
-                    <div class="w-full aspect-square bg-blue-500 -z-10 absolute top-full left-0 rounded-full"></div>
-                    <div class="w-full aspect-square bg-blue-400 -z-10 absolute top-full left-0 rounded-full"></div>
-                </a>
-                <button data-collapse-toggle="navbar-sticky" type="button"
-                    class="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-                    aria-controls="navbar-sticky" aria-expanded="false">
-                    <span class="sr-only">Open main menu</span>
-                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-                        viewBox="0 0 17 14">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M1 1h15M1 7h15M1 13h15" />
-                    </svg>
-                </button>
-            </div>
-            <div class="section flex gap-10 text-white">
-                <a href="/">
-                    <div
-                        class="home before:bg-blue-500 before:absolute relative before:w-full before:h-full before:rounded-full px-4 py-2 overflow-hidden before:top-0 before:left-0 before:scale-y-0 hover:before:scale-y-100 before:transition-all hover:before:rounded-none before:-z-10 rounded-full before:origin-bottom">
-                        Home
-                    </div>
-                </a>
-                <a href="/workbook/upload">
-                    <div
-                        class="workbook before:bg-blue-500 before:absolute relative before:w-full before:h-full before:rounded-full px-4 py-2 overflow-hidden before:top-0 before:left-0 before:scale-y-0 hover:before:scale-y-100 before:transition-all hover:before:rounded-none before:-z-10 rounded-full before:origin-bottom">
-                        Workbook
-                    </div>
-                </a>
-            </div>
-        </div>
-    </nav>
-    <div class="container">
-        <h1>Welcome to <span id="summarize">Summarize</span></h1>
-        <p class="typewriter" id="quote"></p>
-        <div class="cta">
-            <a href="/workbook/upload">Get Started</a>
+    <div id="loader"
+        class=" h-screen w-full bg-[#0c1040] top-0 left-0 z-[9999] absolute flex justify-center items-center">
+        <div class="text absolute flex justify-center items-center gap-2 text-primary-theme-one">
+            <i class="fa-solid fa-circle"></i>
+            <h1 class="text-[clamp(3rem,5vw,100rem)]">Welcome</h1>
         </div>
     </div>
+    <div class="main hidden">
+        <nav
+            class="bg-primary-theme-one sticky w-full z-50 top-0 start-0 border-b border-secondary-theme-two text-primary-textTheme-one pb-4 h-32 my-auto">
+            <div
+                class="bg-[#0c1040] text-primary-theme-one flex justify-center items-center py-2 text-center sm:text-base text-xs">
+                <span>
+                    Get a sneak peek into our PDF assistant! Make reading interesting.
+                </span>
+            </div>
+            <div class="flex flex-wrap items-center justify-evenly py-4">
+                <a href="/" class="flex items-center rtl:space-x-reverse">
+                    <span class="self-center text-2xl font-semibold whitespace-nowrap">
+                        <img src="/Images/Logo.png" alt="Logo" class="size-12">
+                    </span>
+                </a>
+                <div class="section md:gap-10 gap-2 hidden md:flex">
+                    <a href="/">
+                        <div
+                            class="home before:bg-primary-textTheme-one before:absolute relative before:w-full before:h-full before:rounded-full px-4 py-2 overflow-hidden before:top-0 before:left-0 before:scale-y-0 hover:before:scale-y-100 before:transition-all hover:before:rounded-none before:-z-10 rounded-full before:origin-bottom hover:text-primary-theme-one focus:text-primary-theme-one focus:before:scale-y-100 duration-300">
+                            Home
+                        </div>
+                    </a>
+                    <a href="/workbook/upload">
+                        <div
+                            class="workbook before:bg-primary-textTheme-one before:absolute relative before:w-full before:h-full before:rounded-full px-4 py-2 overflow-hidden before:top-0 before:left-0 before:scale-y-0 hover:before:scale-y-100 before:transition-all hover:before:rounded-none before:-z-10 rounded-full before:origin-bottom hover:text-primary-theme-one focus:text-primary-theme-one focus:before:scale-y-100 duration-300">
+                            Workbook
+                        </div>
+                    </a>
+                </div>
+                <a href="/workbook/upload/"
+                    class="select-none px-2 py-1 sm:px-4 sm:py-2 rounded-3xl backdrop-blur-xl overflow-hidden font-Poppins relative z-0  p-0 getStarted flex flex-col hover:ring-0 transition-all duration-500 outline-none md:text-lg ml-3 border-primary-textTheme-one border-dashed border-4 hover:text-primary-theme-one hover:border-solid text-primary-textTheme-one">
+                    Get started
+                    <div
+                        class="w-full aspect-square bg-secondary-theme-two -z-10 absolute top-full left-0 rounded-full">
+                    </div>
+                    <div
+                        class="w-full aspect-square bg-secondary-theme-three -z-10 absolute top-full left-0 rounded-full">
+                    </div>
+                    <div
+                        class="w-full aspect-square bg-secondary-theme-one -z-10 absolute top-full left-0 rounded-full">
+                    </div>
+                </a>
+            </div>
+        </nav>
+        <main>
+            <section class="bg-secondary-theme-two w-full flex md:flex-row flex-col text-primary-theme-one"
+                style="height: calc(100vh - 128px);">
+                <article class="md:w-1/2 md:h-full w-full h-full flex flex-col relative">
+                    <div class="bg-primary-theme-two md:mr-10 flex justify-center items-center flex-col flex-grow">
+                        <h1 class="text-primary-textTheme-two font-Spicy md:text-[clamp(3rem,6vw,10rem)] text-[clamp(3rem,10vw,10rem)]"
+                            style="-webkit-text-stroke-width: 2px; -webkit-text-stroke-color: black;">
+                            <p
+                                class="before:w-full before:h-full relative before:absolute before:top-0 before:-right-[4px] w-auto h-auto before:content-['Powerful'] before:bg-clip-text  before:text-secondary-theme-two before:-z-10 z-10">
+                                Powerful
+                            </p>
+                            <p
+                                class="before:w-full before:h-full relative before:absolute before:top-0 before:-right-[4px] w-auto h-auto before:content-['Summarising'] before:bg-clip-text  before:text-secondary-theme-two before:-z-10 z-10">
+                                Summarising
+                            </p>
+                            <p
+                                class="before:w-full before:h-full relative before:absolute before:top-0 before:-right-[4px] w-auto h-auto before:content-['Solution'] before:bg-clip-text  before:text-secondary-theme-two before:-z-10 z-10">
+                                Solution
+                            </p>
+                        </h1>
+                        <a href="/workbook/upload"
+                            class="relative z-10 before:bg-secondary-theme-one before:top-0 before:left-0 before:w-full before:h-full rounded-2xl p-2 before:-z-10 before:absolute bg-primary-textTheme-two hover:before:scale-x-0 before:origin-center before:transition-all before:duration-700 overflow-hidden">
+                            <p
+                                class="bg-primary-theme-one px-4 py-2 rounded-2xl border-2 border-dashed border-primary-textTheme-one text-primary-textTheme-one font-bold flex gap-5 items-center group">
+                                <i class="fa-solid fa-star group-hover:rotate-45 transition-all duration-300"></i>
+                                Try it
+                                <i class="fa-solid fa-star group-hover:rotate-45 transition-all duration-300"></i>
+                            </p>
+                        </a>
+                    </div>
+                    <div style="clip-path: polygon(100% 100%, 0% 100% , 0.00% 52.28%, 2.00% 49.47%, 4.00% 46.75%, 6.00% 44.63%, 8.00% 43.47%, 10.00% 43.50%, 12.00% 44.70%, 14.00% 46.87%, 16.00% 49.60%, 18.00% 52.40%, 20.00% 54.77%, 22.00% 56.27%, 24.00% 56.64%, 26.00% 55.81%, 28.00% 53.93%, 30.00% 51.33%, 32.00% 48.49%, 34.00% 45.93%, 36.00% 44.10%, 38.00% 43.34%, 40.00% 43.79%, 42.00% 45.36%, 44.00% 47.77%, 46.00% 50.58%, 48.00% 53.29%, 50.00% 55.40%, 52.00% 56.54%, 54.00% 56.49%, 56.00% 55.26%, 58.00% 53.09%, 60.00% 50.35%, 62.00% 47.55%, 64.00% 45.19%, 66.00% 43.71%, 68.00% 43.36%, 70.00% 44.22%, 72.00% 46.12%, 74.00% 48.72%, 76.00% 51.56%, 78.00% 54.11%, 80.00% 55.92%, 82.00% 56.66%, 84.00% 56.19%, 86.00% 54.60%, 88.00% 52.18%, 90.00% 49.36%, 92.00% 46.66%, 94.00% 44.56%, 96.00% 43.45%, 98.00% 43.52%, 100.00% 44.77%);"
+                        class="bg-secondary-theme-two absolute w-full h-96 bottom-0">
+
+                    </div>
+                </article>
+                <article class="w-1/2 h-full hidden md:block bg-[url('/Images/Section.png')] bg-cover bg-center">
+                </article>
+            </section>
+            <section
+                class="why-us flex flex-col justify-center items-center relative font-Poppins bg-primary-theme-one">
+                <h3 class="text-[clamp(1.5rem,2.5vw,10rem)] uppercase py-14 text-primary-theme-two font-Spicy">Why
+                    Choose Us
+                </h3>
+                <div
+                    class="points-container  flex lg:flex-row flex-col px-[clamp(15px,3vw,10rem)] justify-center items-center">
+                </div>
+            </section>
+            <section
+                class="text-content text-[clamp(2.5rem,4vw,100rem)] flex justify-center bg-primary-theme-one px-10 pt-20">
+                <div class="heading font-Lobster text-center">
+                    <div class="text-primary-theme-two font-Spicy colourful-span">
+                        <span>Solve</span>
+                        <div>
+                            <span class="dynamic text-primary-textTheme-two"></span>
+                            <span class="cursor h-full select-none bg-primary-textTheme-two">&nbsp;</span>
+                        </div>
+                    </div>
+                    <div>
+                        regarding any document.
+                    </div>
+                </div>
+            </section>
+        </main>
+        <footer class="bg-primary-theme-two text-center text-white">
+            <p>Made with ❣️ by Panjab University Students</p>
+        </footer>
+    </div>
 </body>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
     integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
     crossorigin="anonymous" referrerpolicy="no-referrer">
     </script>
 <script src="/Script/navbar.js"></script>
+<script src="/Script/why_us.js"></script>
+<script src="/Script/dynamic_text.js"></script>
+<script src="/Script/pre_loader.js"></script>
 
 </html>
-
-
-<script>
-    // Typewriter text content
-    const quote = "Summarizer: Your AI-powered tool for  communication with PDFs.";
-    let i = 0;
-
-    // Typewriter effect function
-    function typeWriter() {
-        if (i < quote.length) {
-            document.getElementById("quote").innerHTML += quote.charAt(i);
-            i++;
-            setTimeout(typeWriter, 80); // Speed up the typing (80ms per character)
-        }
-    }
-
-    // Trigger typewriter effect on page load
-    window.onload = function () {
-        typeWriter();
-        // Trigger the container fade-in animation after a delay
-        setTimeout(() => {
-            document.querySelector('.container').style.opacity = 1;
-            document.querySelector('.container').style.transform = 'translateY(0)';
-        }, 200); // Delay for the fade-in effect
-    };
-</script>
