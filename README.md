@@ -15,6 +15,7 @@ This repository contains scripts to populate and establish a Chroma database, an
 Ensure you have the following installed on your system:
 - Python 3.6+
 - `pip` (Python package installer)
+-'ollama' (To run large language models)
 
 ## Setup Instructions
 
@@ -29,26 +30,30 @@ cd your-repo-name
 2. Install required packages
 Use the following command to install all the dependencies listed in requirements.txt:
 
-bash
-Copy code
-pip install -r requirements.txt
+'''bash
+pip install -r requirements.txt'''
+
 3. Add Your PDF File
 Make sure to place the PDF file that you want to process in the following directory:
 
-bash
+
 ```
+bash
 ./pechack/data
 ```
 Example:
 
+
+```
 bash
-```./pechack/data/yourfile.pdf```
+./pechack/data/yourfile.pdf```
 
 4. Populate the Chroma Database
 After installing the required packages and adding your PDF file, you can run the following script to establish the Chroma database and set up PDF processing:
 
-bash
+
 ```
+bash
 python3 populate_database.py
 ```
 This will:
