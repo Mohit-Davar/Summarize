@@ -29,7 +29,6 @@ export const AuthProvider = ({ children }) => {
             (response) => response,
             async (error) => {
                 const originalRequest = error.config;
-                // Prevent infinite loop: don't retry if already tried or if refresh endpoint itself fails
                 if (
                     error.response?.status === 403 &&
                     !originalRequest._retry &&
