@@ -8,6 +8,7 @@ import { FormError } from '../components/ui/Error';
 import { Input, Label } from '../components/ui/Form';
 import { LoadingDots } from '../components/ui/Loading';
 import { showErrorToast } from '../utils/showToast';
+import { useAuthStore } from "../zustand/authStore"
 
 const SignUpSchema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -18,12 +19,13 @@ const SignUpSchema = z.object({
 export default function Signup() {
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(SignUpSchema) });
     const navigate = useNavigate();
+    const { setAccessToken } = useAuthStore();
     const [isLoading, setIsLoading] = useState(false);
-
     const onSubmit = async (data) => {
         setIsLoading(true);
         try {
             console.log(data);
+            setAccessToken(data);
             navigate("/upload");
         } catch {
             showErrorToast("Failed to signup");
