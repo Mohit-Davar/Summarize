@@ -4,17 +4,6 @@ import { navItems } from '../constants';
 import { BorderButton, FilledButton } from './ui/Button';
 import { MobileNav, MobileNavHeader, MobileNavMenu, MobileNavToggle, Navbar, NavbarLogo, NavBody, NavItems } from './ui/ResizableNavbar';
 
-const AuthButtons = () => (
-  <div className="flex sm:flex-row flex-col gap-4 sm:p-0 px-6 py-4 w-full sm:w-auto">
-    <Link to="/login">
-      <BorderButton className="w-full sm:w-auto">Login</BorderButton>
-    </Link>
-    <Link to="/signup">
-      <FilledButton className="w-full sm:w-auto">Sign Up</FilledButton>
-    </Link>
-  </div>
-);
-
 export default function FixedNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
@@ -43,7 +32,9 @@ export default function FixedNavbar() {
             items={navItems}
             onItemClick={(id) => handleScrollTo(id)}
           />
-          <AuthButtons />
+          <Link to="/login">
+            <BorderButton className="w-full sm:w-auto">Login</BorderButton>
+          </Link>
         </NavBody>
 
         {/* Mobile Navigation */}
@@ -66,7 +57,9 @@ export default function FixedNavbar() {
                 {item.name}
               </button>
             ))}
-            <AuthButtons />
+            <Link to="/login">
+              <FilledButton className="w-full sm:w-auto">Login</FilledButton>
+            </Link>
           </MobileNavMenu>
         </MobileNav>
       </Navbar>

@@ -4,7 +4,10 @@ import {
   SearchCheck,
   LocateFixed,
   Lightbulb,
-  Image
+  Image,
+  Upload,
+  Bot,
+  Share2Icon
 } from "lucide-react";
 
 import user1 from "../assets/profile-pictures/user1.jpg";
@@ -119,4 +122,22 @@ export const checklistItems = [
     description:
       "Each response includes page and line references, so you can quickly verify source material.",
   }
+];
+
+export const uploadCards = [
+  {
+    title: 'Upload & Summarize',
+    description: 'Upload any PDF and receive a summary along with suggested questions.',
+    icon: <Upload size={40} />,
+  },
+  {
+    title: 'Chat & Clarify',
+    description: 'Ask questions using our AI chatbot and get citations for more clarity.',
+    icon: <Bot size={40} />,
+  },
+  {
+    title: 'Share & Collaborate',
+    description: 'Easily share your chat with classmates, friends, or study groups.',
+    icon: <Share2Icon size={40} />,
+  },
 ];
