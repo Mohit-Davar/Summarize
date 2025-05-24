@@ -1,6 +1,7 @@
-import { create } from 'zustand';
-import { api } from '../api/BaseAPI';
 import axios from 'axios';
+import { create } from 'zustand';
+
+import { api } from '../api/BaseApi';
 
 export const useAuthStore = create((set, get) => {
     const setAccessToken = (token) => {

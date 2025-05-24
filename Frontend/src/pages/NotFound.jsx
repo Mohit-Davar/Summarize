@@ -1,5 +1,7 @@
-import { BorderButton } from "../components/ui/Button"
 import { useNavigate } from 'react-router-dom';
+
+import { BorderButton } from '../components/ui/Button';
+
 export default function Error() {
     const navigate = useNavigate();
     return (

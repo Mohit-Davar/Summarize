@@ -1,10 +1,14 @@
-import { Route, Routes } from 'react-router-dom';
-import NotFound from './pages/NotFound';
-import LandingPage from './pages/LandingPage';
-import Signup from './pages/Signup';
-import Login from './pages/Login';
-import Upload from './pages/Upload';
+import {
+  Route,
+  Routes,
+} from 'react-router-dom';
+
 import { Toast } from './components/ui/Error';
+import LandingPage from './pages/LandingPage';
+import Login from './pages/Login';
+import NotFound from './pages/NotFound';
+import Signup from './pages/Signup';
+import Upload from './pages/Upload';
 
 export default function App() {
   return (

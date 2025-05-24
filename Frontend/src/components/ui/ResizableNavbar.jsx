@@ -1,16 +1,21 @@
-"use client";;
-import { cn } from "../../utils/clsx";
-import { MenuIcon, X } from "lucide-react";
+import React, {
+    useRef,
+    useState,
+} from 'react';
+
 import {
     AnimatePresence,
-    useScroll,
+    motion,
     useMotionValueEvent,
-    // eslint-disable-next-line no-unused-vars
-    motion
-} from "framer-motion";
-import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+    useScroll,
+} from 'framer-motion';
+import {
+    MenuIcon,
+    X,
+} from 'lucide-react';
+import { Link } from 'react-router-dom';
 
+import { cn } from '../../utils/clsx';
 
 export const Navbar = ({
     children,

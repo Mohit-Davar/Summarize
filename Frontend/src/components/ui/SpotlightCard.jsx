@@ -1,5 +1,13 @@
-import { useRef, useState } from 'react';
-import { motion, useAnimation } from 'framer-motion';
+import {
+    useRef,
+    useState
+} from 'react';
+
+// eslint-disable-next-line no-unused-vars
+import {
+    motion,
+    useAnimation,
+} from 'framer-motion';
 
 const SpotlightItem = ({ title, description, icon }) => {
     const divRef = useRef(null);
@@ -21,19 +29,19 @@ const SpotlightItem = ({ title, description, icon }) => {
             onMouseMove={handleMouseMove}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
-            className="relative w-80 rounded-3xl border border-neutral-800 bg-neutral-950 p-8"
+            className="relative bg-neutral-950 p-8 border border-neutral-800 rounded-3xl w-full max-w-80 cursor-pointer"
         >
             <motion.div
-                className="pointer-events-none absolute -inset-px rounded-3xl"
+                className="absolute -inset-px rounded-3xl pointer-events-none"
                 animate={controls}
                 transition={{ duration: 0.5 }}
                 style={{
-                    background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(234,88,12,.15), transparent 40%)`,
+                    background: `radial-gradient(600px circle at ${position.x}px ${position.y}px, rgba(234,88,12,.20), transparent 40%)`,
                 }}
             />
             <div className="mb-4 text-orange-600">{icon}</div>
-            <h3 className="mb-2 font-calSans font-medium text-neutral-100">{title}</h3>
-            <p className="text-sm text-neutral-400">{description}</p>
+            <h3 className="mb-2 font-calSans font-medium text-neutral-100 md:text-xl">{title}</h3>
+            <p className="text-neutral-400 text-sm md:text-lg">{description}</p>
         </div>
     );
 };

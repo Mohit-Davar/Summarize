@@ -1,7 +1,11 @@
-import { cn } from "../../utils/clsx";
-import { Bounce, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { AlertTriangle } from "lucide-react";
+
+import {
+  Bounce,
+  ToastContainer,
+} from 'react-toastify';
+
+import { cn } from '../../utils/clsx';
 
 export const Toast = () => (
     <ToastContainer

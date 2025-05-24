@@ -1,8 +1,8 @@
-import Navbar from "../components/Navbar";
-import HeroSection from "../components/landingPage/HeroSection";
-import FeatureSection from "../components/landingPage/FeatureSection";
-import Workflow from "../components/landingPage/Workflow";
-import Testimonials from "../components/landingPage/Testimonials";
+import FeatureSection from '../components/landingPage/FeatureSection';
+import HeroSection from '../components/landingPage/HeroSection';
+import Testimonials from '../components/landingPage/Testimonials';
+import Workflow from '../components/landingPage/Workflow';
+import Navbar from '../components/Navbar';
 
 export default function LandingPage() {
     return (

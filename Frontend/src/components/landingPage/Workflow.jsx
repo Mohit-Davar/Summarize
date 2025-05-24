@@ -1,5 +1,6 @@
-import { CheckCircle2 } from "lucide-react";
-import { checklistItems } from "../../constants/index";
+import { CheckCircle2 } from 'lucide-react';
+
+import { checklistItems } from '../../constants/index';
 
 const Workflow = () => {
   return (

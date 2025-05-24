@@ -1,4 +1,7 @@
-import { Bounce, toast } from "react-toastify";
+import {
+    Bounce,
+    toast,
+} from 'react-toastify';
 
 const DEFAULT_TOAST_OPTIONS = {
     position: "top-center",
@@ -6,7 +9,7 @@ const DEFAULT_TOAST_OPTIONS = {
     hideProgressBar: false,
     closeOnClick: true,
     pauseOnHover: true,
-    pauseOnFocusLoss:true,
+    pauseOnFocusLoss: true,
     draggable: true,
     progress: undefined,
     theme: "light",

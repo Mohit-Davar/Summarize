@@ -3,7 +3,7 @@ import { testimonials } from '../../constants/index';
 const Testimonials = () => {
   return (
     <div className="mt-20 tracking-wide" id="testimonials">
-      <h2 className="flex flex-wrap justify-center items-center gap-1 mt-10 lg:mt-20 font-calSans text-3xl sm:text-5xl lg:text-6xl tracking-wide mb-5">
+      <h2 className="flex flex-wrap justify-center items-center gap-1 mt-10 lg:mt-20 mb-5 font-calSans text-3xl sm:text-5xl lg:text-6xl tracking-wide">
         What People{" "}
         <span className="bg-clip-text bg-gradient-to-r from-orange-500 to-red-600 text-transparent">
           are Saying

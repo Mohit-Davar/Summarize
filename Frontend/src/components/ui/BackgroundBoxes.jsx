@@ -1,7 +1,9 @@
-import React from "react";
+import React from 'react';
+
 // eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
-import { cn } from "../../utils/clsx";
+import { motion } from 'framer-motion';
+
+import { cn } from '../../utils/clsx';
 
 export const BoxesCore = ({
     className,
@@ -32,7 +34,7 @@ export const BoxesCore = ({
             )}
             {...rest}>
             {rows.map((_, i) => (
-                <motion.div key={`row` + i} className="relative h-8 w-16 border-l border-orange-500">
+                <motion.div key={`row` + i} className="relative border-slate-500 border-l border-opacity-60 w-16 h-8">
                     {cols.map((_, j) => (
                         <motion.div
                             whileHover={{
@@ -43,7 +45,7 @@ export const BoxesCore = ({
                                 transition: { duration: 2 },
                             }}
                             key={`col` + j}
-                            className="relative h-8 w-16 border-t border-r border-orange-500">
+                            className="relative border-slate-500 border-t border-r border-opacity-50 w-16 h-8">
                             {j % 2 === 0 && i % 2 === 0 ? (
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -51,7 +53,7 @@ export const BoxesCore = ({
                                     viewBox="0 0 24 24"
                                     strokeWidth="1.5"
                                     stroke="currentColor"
-                                    className="pointer-events-none absolute -top-[14px] -left-[22px] h-6 w-10 stroke-[1px] text-slate-700">
+                                    className="-top-[14px] -left-[22px] absolute stroke-[1px] w-10 h-6 text-slate-700 pointer-events-none">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m6-6H6" />
                                 </svg>
                             ) : null}

@@ -1,8 +1,25 @@
-import { useEffect, useState } from 'react';
+import {
+  useEffect,
+  useState,
+} from 'react';
+
 import { Link } from 'react-router-dom';
+
 import { navItems } from '../constants';
-import { BorderButton, FilledButton } from './ui/Button';
-import { MobileNav, MobileNavHeader, MobileNavMenu, MobileNavToggle, Navbar, NavbarLogo, NavBody, NavItems } from './ui/ResizableNavbar';
+import {
+  BorderButton,
+  FilledButton,
+} from './ui/Button';
+import {
+  MobileNav,
+  MobileNavHeader,
+  MobileNavMenu,
+  MobileNavToggle,
+  Navbar,
+  NavbarLogo,
+  NavBody,
+  NavItems,
+} from './ui/ResizableNavbar';
 
 export default function FixedNavbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
