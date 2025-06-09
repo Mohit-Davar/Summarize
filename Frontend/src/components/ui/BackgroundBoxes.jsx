@@ -1,6 +1,5 @@
 import React from 'react';
 
-// eslint-disable-next-line no-unused-vars
 import { motion } from 'framer-motion';
 
 import { cn } from '../../utils/clsx';
@@ -19,9 +18,7 @@ export const BoxesCore = ({
         "#FFA500", // Classic Orange
         "#FF4500", // Neon Flame
     ];
-    const getRandomColor = () => {
-        return colors[Math.floor(Math.random() * colors.length)];
-    };
+    const getRandomColor = () => colors[Math.floor(Math.random() * colors.length)];
 
     return (
         <div

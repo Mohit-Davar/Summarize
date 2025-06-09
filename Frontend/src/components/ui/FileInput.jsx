@@ -1,4 +1,5 @@
 import {
+    useCallback,
     useRef,
     useState,
 } from 'react';
@@ -36,10 +37,10 @@ export const FileUpload = ({
     const [files, setFiles] = useState([]);
     const fileInputRef = useRef(null);
 
-    const handleFileChange = (newFiles) => {
+    const handleFileChange = useCallback((newFiles) => {
         setFiles([newFiles[0]]); // only keep 1 PDF
         onChange && onChange(newFiles);
-    };
+    }, [onChange]);
 
     const handleClick = () => {
         fileInputRef.current?.click();
@@ -67,10 +68,6 @@ export const FileUpload = ({
                     accept="application/pdf"
                     onChange={(e) => handleFileChange(Array.from(e.target.files || []))}
                     className="hidden" />
-                <div
-                    className="absolute inset-0 [mask-image:radial-gradient(ellipse_at_center,white,transparent)]">
-                    <GridPattern />
-                </div>
                 <div className="relative mx-auto mt-10 w-full max-w-xl">
                     {files.length > 0 &&
                         files.map((file, idx) => (
@@ -152,25 +149,3 @@ export const FileUpload = ({
         </div>
     );
 };
-
-export function GridPattern() {
-    const columns = 41;
-    const rows = 11;
-    return (
-        <div
-            className="flex flex-wrap justify-center items-center gap-x-px gap-y-px bg-gray-100 dark:bg-neutral-900 scale-105 shrink-0">
-            {Array.from({ length: rows }).map((_, row) =>
-                Array.from({ length: columns }).map((_, col) => {
-                    const index = row * columns + col;
-                    return (
-                        <div
-                            key={`${col}-${row}`}
-                            className={`w-10 h-10 flex shrink-0 rounded-[2px] ${index % 2 === 0
-                                ? "bg-gray-50 dark:bg-neutral-950"
-                                : "bg-gray-50 dark:bg-neutral-950 shadow-[0px_0px_1px_3px_rgba(255,255,255,1)_inset] dark:shadow-[0px_0px_1px_3px_rgba(0,0,0,1)_inset]"
-                                }`} />
-                    );
-                }))}
-        </div>
-    );
-}

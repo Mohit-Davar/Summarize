@@ -12,12 +12,11 @@ const DEFAULT_TOAST_OPTIONS = {
     pauseOnFocusLoss: true,
     draggable: true,
     progress: undefined,
-    theme: "light",
+    theme: "colored",
     transition: Bounce,
     style: {
         width: "100%",
         maxWidth: "400px",
-        margin: "50px auto",
         borderRadius: "10px",
         textAlign: "center",
         fontFamily: "Poppins",

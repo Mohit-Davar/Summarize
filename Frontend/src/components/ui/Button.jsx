@@ -18,7 +18,7 @@ export function FilledButton({ children, className, ...props }) {
     return (
         <button
             className={cn(
-                "bg-gradient-to-r from-orange-500 to-red-500 sm:hover:shadow-md rounded-lg text-white px-5 py-3 transition duration-200",
+                "bg-gradient-to-r from-orange-500 to-red-500 sm:hover:shadow-md rounded-lg text-white px-5 py-3 transition duration-200 flex",
                 className
             )}
             {...props}

@@ -17,6 +17,8 @@ import {
 } from '../components/ui/Form';
 import { LoadingDots } from '../components/ui/Loading';
 import { showErrorToast } from '../utils/showToast';
+import { useAuthStore } from '../zustand/authStore';
+import { LoginUser } from '../api/Login';
 
 const LoginSchema = z.object({
     email: z.string().email(),
@@ -26,15 +28,16 @@ const LoginSchema = z.object({
 export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: zodResolver(LoginSchema) });
     const navigate = useNavigate();
+    const { setAccessToken } = useAuthStore();
     const [isLoading, setIsLoading] = useState(false);
-
     const onSubmit = async (data) => {
         setIsLoading(true);
         try {
-            console.log(data);
-            navigate("/upload");
-        } catch {
-            showErrorToast("Failed to login");
+            const accessToken = await LoginUser(data)
+            setAccessToken(accessToken);
+            navigate("/upload", { replace: true });
+        } catch (error) {
+            showErrorToast(error.message || "Failed to login");
         } finally {
             setIsLoading(false);
         }
@@ -80,7 +83,7 @@ export default function Login() {
                         </div>
 
                         <FilledButton type="submit" className="w-full" disabled={isLoading}>
-                            {isLoading ? <LoadingDots /> : "Login"}
+                            {isLoading ? <LoadingDots containerClassName={"bg-transparent"} dotsClassName={"bg-white"} /> : "Login"}
                         </FilledButton>
                     </div>
 

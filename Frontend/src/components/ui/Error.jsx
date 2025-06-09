@@ -1,8 +1,8 @@
 import 'react-toastify/dist/ReactToastify.css';
 
 import {
-  Bounce,
-  ToastContainer,
+    Bounce,
+    ToastContainer,
 } from 'react-toastify';
 
 import { cn } from '../../utils/clsx';

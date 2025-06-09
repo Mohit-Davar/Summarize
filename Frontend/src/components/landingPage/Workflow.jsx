@@ -2,7 +2,7 @@ import { CheckCircle2 } from 'lucide-react';
 
 import { checklistItems } from '../../constants/index';
 
-const Workflow = () => {
+export default function Workflow(){
   return (
     <div className="mt-20" id="workflow">
       <h2 className="flex flex-wrap justify-center items-center gap-1 mt-10 lg:mt-20 font-calSans text-3xl sm:text-5xl lg:text-6xl tracking-wide">
@@ -32,4 +32,3 @@ const Workflow = () => {
     </div>
   );
 };
-export default Workflow;

@@ -1,26 +1,37 @@
-import {
-  Route,
-  Routes,
-} from 'react-router-dom';
-
+import { Route, Routes } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import { Toast } from './components/ui/Error';
-import LandingPage from './pages/LandingPage';
-import Login from './pages/Login';
-import NotFound from './pages/NotFound';
-import Signup from './pages/Signup';
-import Upload from './pages/Upload';
+import { LoadingSpinner } from './components/ui/Loading';
+
+const Chat = lazy(() => import('./pages/Chat'));
+const LandingPage = lazy(() => import('./pages/LandingPage'));
+const Login = lazy(() => import('./pages/Login'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const Signup = lazy(() => import('./pages/Signup'));
+const Upload = lazy(() => import('./pages/Upload'));
+
+
+// eslint-disable-next-line no-unused-vars
+const withSuspense = (Component) => {
+  return (
+    <Suspense fallback={<LoadingSpinner />}>
+      <Component />
+    </Suspense>
+  );
+};
 
 export default function App() {
   return (
     <>
       <Routes>
-        <Route path='/' element={<LandingPage />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/login' element={<Login />} />
-        <Route path='/upload' element={<Upload />} />
-        <Route path='*' element={<NotFound />} />
+        <Route path="/" element={withSuspense(LandingPage)} />
+        <Route path="/signup" element={withSuspense(Signup)} />
+        <Route path="/login" element={withSuspense(Login)} />
+        <Route path="/upload" element={withSuspense(Upload)} />
+        <Route path="/chat" element={withSuspense(Chat)} />
+        <Route path="*" element={withSuspense(NotFound)} />
       </Routes>
       <Toast />
     </>
-  )
+  );
 }

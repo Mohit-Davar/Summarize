@@ -28,3 +28,11 @@ export function LoadingDots({ dotsClassName, containerClassName }) {
         </div >
     )
 }
+
+export function LoadingSpinner() {
+    return (
+        <div className="z-50 fixed inset-0 flex justify-center items-center bg-white dark:bg-black">
+            <div className="border-orange-500 border-t-2 border-b-2 rounded-full w-10 h-10 animate-spin" />
+        </div>
+    );
+}  

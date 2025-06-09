@@ -18,6 +18,7 @@ import {
 import { LoadingDots } from '../components/ui/Loading';
 import { showErrorToast } from '../utils/showToast';
 import { useAuthStore } from '../zustand/authStore';
+import { newUser } from '../api/Signup';
 
 const SignUpSchema = z.object({
     name: z.string().min(1, "Name is required"),
@@ -33,11 +34,11 @@ export default function Signup() {
     const onSubmit = async (data) => {
         setIsLoading(true);
         try {
-            console.log(data);
-            setAccessToken(data);
-            navigate("/upload");
-        } catch {
-            showErrorToast("Failed to signup");
+            const accessToken = await newUser(data)
+            setAccessToken(accessToken);
+            navigate("/upload", { replace: true });
+        } catch(error) {
+            showErrorToast(error.message || "Failed to signup.");
         } finally {
             setIsLoading(false);
         }
@@ -98,7 +99,7 @@ export default function Signup() {
                         </div>
 
                         <FilledButton type="submit" className="w-full" disabled={isLoading}>
-                            {isLoading ? <LoadingDots /> : "Signup"}
+                            {isLoading ? <LoadingDots containerClassName={"bg-transparent"} dotsClassName={"bg-white"} /> : "Signup"}
                         </FilledButton>
                     </div>
 
