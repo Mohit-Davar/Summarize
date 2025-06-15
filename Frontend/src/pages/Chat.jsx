@@ -1,5 +1,17 @@
-import React, { useState } from 'react';
-import { Send, Upload, FileText, MessageCircle, Sparkles } from 'lucide-react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
+
+import {
+  FileText,
+  Loader,
+  MessageCircle,
+  Sparkles,
+  Upload,
+} from 'lucide-react';
+import io from 'socket.io-client';
 
 const PDFChatInterface = () => {
     const [messages, setMessages] = useState([
@@ -13,6 +25,12 @@ const PDFChatInterface = () => {
     const [inputValue, setInputValue] = useState('');
     const [uploadedPdf, setUploadedPdf] = useState(null);
     const [summary, setSummary] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [isConnected, setIsConnected] = useState(false);
+    const [sessionId, setSessionId] = useState(null);
+
+    const socketRef = useRef(null);
+    const messagesEndRef = useRef(null);
 
     const suggestedQuestions = [
         'What are the main points?',
@@ -22,50 +40,195 @@ const PDFChatInterface = () => {
         'What are the practical implications?'
     ];
 
-    const handleSendMessage = (message = inputValue) => {
-        if (!message.trim()) return;
+    // Initialize Socket.IO connection
+    useEffect(() => {
+        // Generate unique session ID
+        const newSessionId = `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+        setSessionId(newSessionId);
 
+        // Initialize socket connection
+        socketRef.current = io('http://localhost:5000', {
+            withCredentials: true,
+            transports: ['websocket', 'polling']
+        });
+
+        const socket = socketRef.current;
+
+        // Connection event handlers
+        socket.on('connect', () => {
+            console.log('Connected to server');
+            setIsConnected(true);
+            socket.emit('join-session', newSessionId);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('Disconnected from server');
+            setIsConnected(false);
+        });
+
+        socket.on('connect_error', (error) => {
+            console.error('Connection error:', error);
+            setIsConnected(false);
+        });
+
+        // Chat response handler
+        socket.on('chat-response', (data) => {
+            setIsLoading(false);
+
+            if (data.error) {
+                const errorMessage = {
+                    id: Date.now(),
+                    type: 'assistant',
+                    content: data.error,
+                    timestamp: new Date().toLocaleTimeString(),
+                    isError: true
+                };
+                setMessages(prev => [...prev, errorMessage]);
+            } else {
+                const assistantMessage = {
+                    id: Date.now(),
+                    type: 'assistant',
+                    content: data.message,
+                    timestamp: new Date().toLocaleTimeString()
+                };
+                setMessages(prev => [...prev, assistantMessage]);
+            }
+        });
+
+        // PDF upload response handler
+        socket.on('pdf-uploaded', (data) => {
+            setIsLoading(false);
+
+            if (data.error) {
+                const errorMessage = {
+                    id: Date.now(),
+                    type: 'system',
+                    content: `Error uploading PDF: ${data.error}`,
+                    timestamp: new Date().toLocaleTimeString(),
+                    isError: true
+                };
+                setMessages(prev => [...prev, errorMessage]);
+            } else {
+                setUploadedPdf(data.file);
+                setSummary(data.summary);
+
+                const successMessage = {
+                    id: Date.now(),
+                    type: 'system',
+                    content: `PDF "${data.file.name}" uploaded successfully! I've analyzed the document and generated a summary.`,
+                    timestamp: new Date().toLocaleTimeString()
+                };
+                setMessages(prev => [...prev, successMessage]);
+            }
+        });
+
+        // Cleanup on unmount
+        return () => {
+            if (socket) {
+                socket.disconnect();
+            }
+        };
+    }, []);
+
+    // Auto-scroll to bottom when new messages arrive
+    useEffect(() => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }, [messages]);
+
+    const handleSendMessage = (message = inputValue) => {
+        if (!message.trim() || !isConnected || !sessionId) return;
+
+        if (!uploadedPdf) {
+            const warningMessage = {
+                id: Date.now(),
+                type: 'assistant',
+                content: 'Please upload a PDF first before asking questions.',
+                timestamp: new Date().toLocaleTimeString(),
+                isError: true
+            };
+            setMessages(prev => [...prev, warningMessage]);
+            return;
+        }
+
+        // Add user message to chat
         const newMessage = {
-            id: messages.length + 1,
+            id: Date.now(),
             type: 'user',
             content: message,
             timestamp: new Date().toLocaleTimeString()
         };
-
         setMessages(prev => [...prev, newMessage]);
         setInputValue('');
+        setIsLoading(true);
 
-        // Simulate assistant response
-        setTimeout(() => {
-            const assistantResponse = {
-                id: messages.length + 2,
-                type: 'assistant',
-                content: `I understand you're asking about: "${message}". Based on the uploaded PDF, here's my analysis...`,
-                timestamp: new Date().toLocaleTimeString()
-            };
-            setMessages(prev => [...prev, assistantResponse]);
-        }, 1000);
+        // Send message to server
+        socketRef.current.emit('chat-message', {
+            message: message,
+            sessionId: sessionId
+        });
     };
 
-    const handleFileUpload = (event) => {
+    const handleFileUpload = async (event) => {
         const file = event.target.files[0];
-        if (file && file.type === 'application/pdf') {
-            setUploadedPdf({
-                name: file.name,
-                size: (file.size / 1024 / 1024).toFixed(2) + ' MB',
-                pages: '12 pages',
-                uploadDate: new Date().toLocaleDateString()
-            });
-            setSummary('This document discusses advanced machine learning techniques with focus on neural networks and deep learning architectures. Key findings include improved accuracy rates and novel optimization methods for training large-scale models...');
+        if (!file || file.type !== 'application/pdf') {
+            alert('Please select a valid PDF file');
+            return;
+        }
 
-            // Add system message about PDF upload
-            const uploadMessage = {
-                id: messages.length + 1,
+        if (!isConnected || !sessionId) {
+            alert('Not connected to server. Please wait and try again.');
+            return;
+        }
+
+        setIsLoading(true);
+
+        try {
+            // Upload via REST API (more reliable for file uploads)
+            const formData = new FormData();
+            formData.append('pdf', file);
+            formData.append('sessionId', sessionId);
+
+            const response = await fetch('http://localhost:5000/upload-pdf', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const result = await response.json();
+            setIsLoading(false);
+
+            if (result.success) {
+                setUploadedPdf(result.file);
+                setSummary(result.summary);
+
+                const successMessage = {
+                    id: Date.now(),
+                    type: 'system',
+                    content: `PDF "${result.file.name}" uploaded successfully! I've analyzed the document and generated a summary.`,
+                    timestamp: new Date().toLocaleTimeString()
+                };
+                setMessages(prev => [...prev, successMessage]);
+            } else {
+                const errorMessage = {
+                    id: Date.now(),
+                    type: 'system',
+                    content: `Error uploading PDF: ${result.error}`,
+                    timestamp: new Date().toLocaleTimeString(),
+                    isError: true
+                };
+                setMessages(prev => [...prev, errorMessage]);
+            }
+        } catch (error) {
+            setIsLoading(false);
+            console.error('Upload error:', error);
+
+            const errorMessage = {
+                id: Date.now(),
                 type: 'system',
-                content: `PDF "${file.name}" uploaded successfully! I've analyzed the document and generated a summary.`,
-                timestamp: new Date().toLocaleTimeString()
+                content: 'Failed to upload PDF. Please check your connection and try again.',
+                timestamp: new Date().toLocaleTimeString(),
+                isError: true
             };
-            setMessages(prev => [...prev, uploadMessage]);
+            setMessages(prev => [...prev, errorMessage]);
         }
     };
 
@@ -73,8 +236,23 @@ const PDFChatInterface = () => {
         handleSendMessage(question);
     };
 
+    const handleKeyPress = (e) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSendMessage();
+        }
+    };
+
     return (
         <div className="flex bg-gradient-to-br from-orange-50 to-orange-100 h-screen">
+            {/* Connection Status Indicator */}
+            <div className={`fixed top-4 right-4 z-50 px-3 py-1 rounded-full text-xs font-medium ${isConnected
+                    ? 'bg-green-100 text-green-800 border border-green-200'
+                    : 'bg-red-100 text-red-800 border border-red-200'
+                }`}>
+                {isConnected ? '🟢 Connected' : '🔴 Disconnected'}
+            </div>
+
             {/* Left Sidebar - 1/3 space */}
             <div className="flex flex-col bg-white shadow-xl border-gray-200 border-r w-1/3">
                 {/* Header */}
@@ -95,9 +273,13 @@ const PDFChatInterface = () => {
                             <button
                                 key={index}
                                 onClick={() => handleSuggestedQuestion(question)}
-                                className="bg-gradient-to-r from-orange-50 hover:from-orange-100 to-orange-100 hover:to-orange-200 hover:shadow-md p-3 border border-orange-200 rounded-lg w-full text-left transition-all duration-200"
+                                disabled={!uploadedPdf || isLoading}
+                                className={`w-full text-left p-3 border border-orange-200 rounded-lg transition-all duration-200 ${uploadedPdf && !isLoading
+                                        ? 'bg-gradient-to-r from-orange-50 hover:from-orange-100 to-orange-100 hover:to-orange-200 hover:shadow-md cursor-pointer'
+                                        : 'bg-gray-50 text-gray-400 cursor-not-allowed'
+                                    }`}
                             >
-                                <p className="text-gray-700 text-sm">{question}</p>
+                                <p className="text-sm">{question}</p>
                             </button>
                         ))}
                     </div>
@@ -152,12 +334,24 @@ const PDFChatInterface = () => {
                                 type="file"
                                 accept=".pdf"
                                 onChange={handleFileUpload}
+                                disabled={isLoading || !isConnected}
                                 className="hidden"
                             />
-                            <div className="p-6 border-2 border-orange-300 hover:border-orange-400 border-dashed rounded-xl text-center transition-colors cursor-pointer">
-                                <FileText className="mx-auto mb-2 w-8 h-8 text-orange-500" />
-                                <p className="text-gray-600 text-sm">Click to upload PDF</p>
-                                <p className="mt-1 text-gray-500 text-xs">Drag & drop or click to browse</p>
+                            <div className={`p-6 border-2 border-dashed rounded-xl text-center transition-colors ${isLoading || !isConnected
+                                    ? 'border-gray-300 bg-gray-50 cursor-not-allowed'
+                                    : 'border-orange-300 hover:border-orange-400 cursor-pointer'
+                                }`}>
+                                {isLoading ? (
+                                    <Loader className="mx-auto mb-2 w-8 h-8 text-orange-500 animate-spin" />
+                                ) : (
+                                    <FileText className="mx-auto mb-2 w-8 h-8 text-orange-500" />
+                                )}
+                                <p className="text-gray-600 text-sm">
+                                    {isLoading ? 'Processing PDF...' : 'Click to upload PDF'}
+                                </p>
+                                <p className="mt-1 text-gray-500 text-xs">
+                                    {isLoading ? 'Please wait' : 'Drag & drop or click to browse'}
+                                </p>
                             </div>
                         </label>
                     )}
@@ -185,42 +379,34 @@ const PDFChatInterface = () => {
                                 className={`max-w-md lg:max-w-lg px-4 py-3 rounded-2xl shadow-sm ${message.type === 'user'
                                         ? 'bg-gradient-to-r from-orange-500 to-orange-600 text-white'
                                         : message.type === 'system'
-                                            ? 'bg-orange-100 text-orange-800 border border-orange-200'
-                                            : 'bg-gray-100 text-gray-800'
+                                            ? message.isError
+                                                ? 'bg-red-100 text-red-800 border border-red-200'
+                                                : 'bg-orange-100 text-orange-800 border border-orange-200'
+                                            : message.isError
+                                                ? 'bg-red-100 text-red-800 border border-red-200'
+                                                : 'bg-gray-100 text-gray-800'
                                     }`}
                             >
                                 <p className="text-sm leading-relaxed">{message.content}</p>
-                                <span className={`text-xs mt-2 block ${message.type === 'user' ? 'text-orange-100' : 'text-gray-500'
+                                <span className={`text-xs mt-2 block ${message.type === 'user' ? 'text-orange-100' :
+                                        message.isError ? 'text-red-600' : 'text-gray-500'
                                     }`}>
                                     {message.timestamp}
                                 </span>
                             </div>
                         </div>
                     ))}
-                </div>
 
-                {/* Input Area */}
-                <div className="bg-white p-6 border-gray-200 border-t">
-                    <div className="flex gap-3">
-                        <input
-                            type="text"
-                            value={inputValue}
-                            onChange={(e) => setInputValue(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && handleSendMessage()}
-                            placeholder="Ask about your PDF..."
-                            className="flex-1 px-4 py-3 border border-gray-300 focus:border-transparent rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 text-gray-700"
-                        />
-                        <button
-                            onClick={() => handleSendMessage()}
-                            className="bg-gradient-to-r from-orange-500 hover:from-orange-600 to-orange-600 hover:to-orange-700 shadow-lg hover:shadow-xl px-6 py-3 rounded-xl text-white transition-all duration-200"
-                        >
-                            <Send className="w-5 h-5" />
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
-};
+                    {/* Loading indicator */}
+                    {isLoading && (
+                        <div className="flex justify-start">
+                            <div className="bg-gray-100 shadow-sm px-4 py-3 rounded-2xl">
+                                <div className="flex items-center gap-2">
+                                    <Loader className="w-4 h-4 text-orange-500 animate-spin" />
+                                    <p className="text-gray-600 text-sm">Thinking...</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
 
-export default PDFChatInterface;
+                    <div ref={messagesEndRef} />
